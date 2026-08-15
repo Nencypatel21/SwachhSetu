@@ -4,11 +4,11 @@
 
 require('dotenv').config();
 
-const required = ['MONGODB_URI'];
-// NOTE: JWT_*, CLOUDINARY_*, WHATSAPP_* become required once their modules go
-// live (B2, B3, B9). Kept optional here in B0 so scaffolding can boot with a
-// partially-filled .env — do not silently start treating them as optional
-// forever, revisit this list when those phases start.
+const required = ['MONGODB_URI', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'];
+// NOTE: JWT_* became required in B2 (auth module went live) — this is the
+// revisit that B0's original comment on this file called for.
+// CLOUDINARY_*, WHATSAPP_* still become required once THEIR modules go live
+// (B3, B9) — don't add them here until then.
 
 const missing = required.filter((key) => !process.env[key]);
 if (missing.length > 0) {
@@ -24,8 +24,10 @@ module.exports = {
   mongodbUri: process.env.MONGODB_URI,
 
   jwt: {
-    accessSecret: process.env.JWT_ACCESS_SECRET || null,
-    refreshSecret: process.env.JWT_REFRESH_SECRET || null,
+    accessSecret: process.env.JWT_ACCESS_SECRET,
+    refreshSecret: process.env.JWT_REFRESH_SECRET,
+    accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   },
 
   cloudinary: {
