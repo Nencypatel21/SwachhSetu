@@ -15,4 +15,6 @@ router.get('/health', (req, res) => {
   apiResponse(res, 200, { status: 'ok', timestamp: new Date().toISOString() });
 });
 
+router.use('/auth', require('../modules/auth/auth.routes'));
+
 module.exports = router;
