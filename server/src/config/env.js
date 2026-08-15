@@ -4,11 +4,15 @@
 
 require('dotenv').config();
 
-const required = ['MONGODB_URI', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET'];
-// NOTE: JWT_* became required in B2 (auth module went live) — this is the
-// revisit that B0's original comment on this file called for.
-// CLOUDINARY_*, WHATSAPP_* still become required once THEIR modules go live
-// (B3, B9) — don't add them here until then.
+const required = ['MONGODB_URI', 'JWT_ACCESS_SECRET', 'JWT_REFRESH_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
+// NOTE: JWT_* became required in B2 (auth module went live).
+// CLOUDINARY_* became required in B3 (uploads module went live) — this is
+// the revisit B0's original comment called for.
+// WHATSAPP_* still becomes required once B9 goes live — don't add it here
+// until then. INTERNAL_SERVICE_KEY (below) is intentionally NOT in this
+// required list: B5's vehicle-location endpoint also accepts a real staff
+// JWT, so a missing key degrades to "simulator path unavailable" rather
+// than blocking boot — see internalService.middleware.js.
 
 const missing = required.filter((key) => !process.env[key]);
 if (missing.length > 0) {
@@ -41,4 +45,8 @@ module.exports = {
     accessToken: process.env.WHATSAPP_ACCESS_TOKEN || null,
     phoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID || null,
   },
+
+  // B5 — simulator (B6) auth path for POST /vehicles/:id/location. Optional
+  // by design; see the required-list note above.
+  internalServiceKey: process.env.INTERNAL_SERVICE_KEY || null,
 };

@@ -16,5 +16,8 @@ router.get('/health', (req, res) => {
 });
 
 router.use('/auth', require('../modules/auth/auth.routes'));
+router.use('/reports', require('../modules/reports/reports.routes'));
+router.use('/uploads', require('../modules/uploads/uploads.routes'));
+router.use('/vehicles', require('../modules/vehicles/vehicles.routes'));
 
 module.exports = router;

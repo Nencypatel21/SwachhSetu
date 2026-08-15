@@ -49,4 +49,4 @@ const attachUserIfPresent = asyncHandler(async (req, res, next) => {
   next();
 });
 
-module.exports = { protect, attachUserIfPresent };
+module.exports = { protect, attachUserIfPresent, verifyAccessTokenSafe: verifyAccessToken };

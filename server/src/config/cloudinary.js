@@ -1,9 +1,11 @@
 const cloudinary = require('cloudinary').v2;
 const env = require('./env');
 
-// Configuration only — actual upload logic (report images §6, WhatsApp media §11)
-// is built in B3/B9. This file exists in B0 purely so those later modules have
-// one place to `require('../config/cloudinary')` from, already configured.
+// Configuration only — actual upload logic lives in modules/uploads/uploads.service.js
+// (B3) and is reused internally by modules/integrations/whatsapp (B9, not yet built).
+// CLOUDINARY_* is required in env.js as of B3, so the else branch below is now a
+// defensive guard rather than an expected MVP-boot path — kept in case env.js's
+// required list is ever relaxed again.
 if (env.cloudinary.cloudName && env.cloudinary.apiKey && env.cloudinary.apiSecret) {
   cloudinary.config({
     cloud_name: env.cloudinary.cloudName,
@@ -12,9 +14,7 @@ if (env.cloudinary.cloudName && env.cloudinary.apiKey && env.cloudinary.apiSecre
     secure: true,
   });
 } else {
-  // Don't crash B0 boot over this — Cloudinary isn't used until B3.
-  // But make it loud so nobody wires an upload against a silently-unconfigured SDK.
-  console.warn('[cloudinary] not configured — CLOUDINARY_* env vars are missing. Fine for B0, must be set before B3.');
+  console.warn('[cloudinary] not configured — CLOUDINARY_* env vars are missing.');
 }
 
 module.exports = cloudinary;
