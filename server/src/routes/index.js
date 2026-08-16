@@ -19,5 +19,7 @@ router.use('/auth', require('../modules/auth/auth.routes'));
 router.use('/reports', require('../modules/reports/reports.routes'));
 router.use('/uploads', require('../modules/uploads/uploads.routes'));
 router.use('/vehicles', require('../modules/vehicles/vehicles.routes'));
+router.use('/hotspots', require('../modules/hotspots/hotspots.routes'));
+router.use('/routes', require('../modules/routes/routes.routes'));
 
 module.exports = router;
